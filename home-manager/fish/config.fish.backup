@@ -1,0 +1,7 @@
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
+
+alias gc="git commit -m"
+alias sf="nvim \$(fd --type f -H | fzf)"
+alias sd="cd \$(fd --type d -H)"
