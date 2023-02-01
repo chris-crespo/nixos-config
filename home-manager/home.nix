@@ -28,6 +28,15 @@
     }; 
   };
 
+  programs.gpg.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    sshKeys = [
+      "0C85337D46761F33E9B2B99B41E6DDFFE4FF7C99"
+    ];
+  };
+
   fonts.fontconfig.enable = true;
 
   # This value determines the Home Manager release that your
