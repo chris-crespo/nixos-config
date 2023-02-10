@@ -36,6 +36,8 @@
     useXkbConfig = true; # use xkbOptions in tty.
   };
 
+  security.polkit.enable = true;
+
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
@@ -85,16 +87,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #   wget
-  ];
-
-  # programs.hyprland = {
-  #   enable = true;
-  #   package = hyprland.packages.${pkgs.system}.default;
-  # };
-
+  environment.systemPackages = with pkgs; [ vim ];
   programs.vim.defaultEditor = true;
 
   # Some programs need SUID wrappers, can be configured further or are

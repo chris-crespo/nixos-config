@@ -1,16 +1,17 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    # ../dunst
-    # ../eww
+    ./dunst
+    ./eww
     ./fish
+    ./git
+    ./keychain
     ./kitty
     ./nvim
-    # ../picom
+    ./picom
     ./rofi
     ./xmonad
 
-    ./git
     ./packages.nix
     ./xinitrc.nix
   ];
@@ -27,21 +28,6 @@
       enable = true;
     }; 
   };
-
-  programs.keychain = {
-    enable = true;
-
-    keys = [ "github" ];
-  };
-
-  # programs.gpg.enable = true;
-  # services.gpg-agent = {
-  #   enable = true;
-  #   enableSshSupport = true;
-  #   sshKeys = [
-  #     "0C85337D46761F33E9B2B99B41E6DDFFE4FF7C99"
-  #   ];
-  # };
 
   fonts.fontconfig.enable = true;
 

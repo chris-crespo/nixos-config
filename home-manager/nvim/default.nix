@@ -13,14 +13,21 @@ in {
 
     plugins = with pkgs.vimPlugins; [
       catppuccin-nvim
-      nvim-autopairs
       nvim-cmp
+      cmp-nvim-lsp
+      cmp-path
+      cmp-buffer
+      cmp-vsnip
+      vim-vsnip
+      nvim-autopairs
+      nvim-lspconfig
       nvim-surround
       {
-        plugin = nvim-treesitter.withPlugins (p: [ p.nix p.lua ]);
+        plugin = nvim-treesitter.withPlugins (p: [ p.nix p.lua p.rust ]);
       }
       nvim-tree-lua
       nvim-web-devicons
+      rust-tools-nvim
       telescope-nvim
       yuck-vim
     ];
@@ -32,11 +39,10 @@ in {
     extraConfig = with builtins; ''
       lua <<EOF
         ${builtins.readFile ./init.lua}
+        ${builtins.readFile ./lua/opts.lua}
         ${builtins.readFile ./lua/core/keymaps.lua}
         ${pluginConfigs}
       EOF
     '';
   };
-
-  # home.file.".config/nvim/init.lua".source = ./init.lua;
 }

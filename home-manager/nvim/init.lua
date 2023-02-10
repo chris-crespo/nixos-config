@@ -8,9 +8,12 @@ opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 
--- require 'lua/core/keymaps'
--- require 'lua/plugins/autopairs'
--- require 'lua/plugins/surround'
--- require 'lua/plugins/telescope'
--- require 'lua/plugins/tree'
--- require 'lua/plugins/treesitter'
+vim.diagnostic.config({
+  virtual_text = false,
+  update_in_insert = true,
+  underline = true,
+  float = {
+    border = 'rounded',
+    source = 'always',
+  }
+})

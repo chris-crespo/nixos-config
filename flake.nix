@@ -8,6 +8,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     hardware.url = "github:nixos/nixos-hardware";
+
   };
 
   outputs = { nixpkgs, home-manager, ... }@inputs: {
