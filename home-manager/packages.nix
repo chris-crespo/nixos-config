@@ -7,6 +7,7 @@
     firefox
     fzf
     killall
+    httpie
     libnotify
     ripgrep
     tldr
