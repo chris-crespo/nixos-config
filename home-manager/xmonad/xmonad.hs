@@ -1,14 +1,24 @@
 import XMonad
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks (docks, manageDocks)
+import XMonad.Actions.Minimize
+import XMonad.Layout.Minimize
 import XMonad.Layout.NoBorders
+import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Fullscreen (fullscreenSupport)
 import XMonad.Layout.Gaps (GapMessage (..), Direction2D (..), gaps, setGaps)
 import XMonad.Layout.LayoutModifier (ModifiedLayout)
 import XMonad.Layout.Spacing (Border (Border), Spacing, spacing, spacingRaw)
 import XMonad.Util.SpawnOnce (spawnOnce)
 
-import Graphics.X11.ExtraTypes.XF86 (xF86XK_MonBrightnessUp, xF86XK_MonBrightnessDown)
+import Graphics.X11.ExtraTypes.XF86 
+  ( xF86XK_MonBrightnessUp
+  , xF86XK_MonBrightnessDown
+  , xF86XK_AudioRaiseVolume
+  , xF86XK_AudioLowerVolume
+  , xF86XK_AudioMute
+  , xF86XK_AudioMicMute
+  )
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
@@ -39,7 +49,7 @@ myStartupHook = do
 
 myGaps = [(L, 160), (R, 160), (U, 120), (D, 120)]
 
-myLayout = lessBorders OnlyFloat $ gaps myGaps $ mySpacing $ tiled
+myLayout = minimize . BW.boringWindows $ lessBorders OnlyFloat $ gaps myGaps $ mySpacing $ tiled
   where 
     mySpacing = spacingRaw False (Border 10 10 10 10) True (Border 10 10 10 10) True 
 
@@ -54,14 +64,16 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm, xK_w), kill)
   , ((modm, xK_t), spawn "eww open powermenu")
 
-  , ((modm, xK_m), windows W.focusMaster)
-  , ((modm, xK_j), windows W.focusDown)
-  , ((modm, xK_k), windows W.focusUp)
+  , ((modm              , xK_m), windows W.focusMaster)
+  , ((modm              , xK_j), windows W.focusDown)
+  , ((modm              , xK_k), windows W.focusUp)
   , ((modm .|. shiftMask, xK_m), windows W.swapMaster)
   , ((modm .|. shiftMask, xK_j), windows W.swapDown)
   , ((modm .|. shiftMask, xK_k), windows W.swapUp)
-  , ((modm, xK_h), sendMessage Shrink)
-  , ((modm, xK_l), sendMessage Expand)
+  , ((modm              , xK_h), sendMessage Shrink)
+  , ((modm              , xK_l), sendMessage Expand)
+  , ((modm              , xK_h), withFocused minimizeWindow)
+  , ((modm .|. shiftMask, xK_h), withLastMinimized maximizeWindow)
 
   -- Gaps
   , ((modm .|. controlMask, xK_g), sendMessage $ ToggleGaps)
@@ -74,6 +86,12 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm .|. shiftMask, xK_u), sendMessage $ DecGap 10 U)
   , ((modm .|. controlMask, xK_i), sendMessage $ IncGap 10 R)
   , ((modm .|. shiftMask, xK_i), sendMessage $ DecGap 10 R)
+
+  -- Audio keys
+  , ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
+  , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
+  , ((0, xF86XK_AudioMute), spawn "pactl set-sink-mute 0 toggle")
+  , ((0, xF86XK_AudioMicMute), spawn "pactl set-source-mute 1 toggle")
 
   -- Brightness keys
   , ((0, xF86XK_MonBrightnessUp), spawn "brightnessctl set +5")

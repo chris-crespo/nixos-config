@@ -8,6 +8,7 @@ opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 
+vim.wo.signcolumn = "yes"
 vim.diagnostic.config({
   virtual_text = false,
   update_in_insert = true,
