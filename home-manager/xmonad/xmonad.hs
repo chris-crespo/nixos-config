@@ -72,8 +72,8 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm .|. shiftMask, xK_k), windows W.swapUp)
   , ((modm              , xK_h), sendMessage Shrink)
   , ((modm              , xK_l), sendMessage Expand)
-  , ((modm              , xK_h), withFocused minimizeWindow)
-  , ((modm .|. shiftMask, xK_h), withLastMinimized maximizeWindow)
+  , ((modm              , xK_n), withFocused minimizeWindow)
+  , ((modm .|. shiftMask, xK_n), withLastMinimized maximizeWindow)
 
   -- Gaps
   , ((modm .|. controlMask, xK_g), sendMessage $ ToggleGaps)

@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
+    ./direnv
     ./dunst
     ./eww
     ./fish
