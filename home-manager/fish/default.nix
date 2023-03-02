@@ -24,7 +24,9 @@
       c = "clear";
       f = "nvim \$(fd --type f -H | fzf)";
       d = "cd \$(fd --type d -H | fzf || pwd)";
+
       hm = "home-manager";
+      dev = "nix develop";
 
       cp = "cp -r";
       mkdir = "mkdir -p";
