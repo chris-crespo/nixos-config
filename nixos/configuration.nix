@@ -64,6 +64,7 @@
     # Configure keymap in X11
     layout = "es";
     xkbOptions = "caps:escape";
+    xkbVariant = "nodeadkeys";
 
     libinput = {
       enable = true;
