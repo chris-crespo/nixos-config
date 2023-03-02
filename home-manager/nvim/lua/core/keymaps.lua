@@ -5,3 +5,4 @@ end
 vim.g.mapleader = ','
 
 map('n', '<leader>t', '<cmd>NvimTreeToggle<cr>')
+map('t', '<Esc>', '<C-\\><C-n>')
