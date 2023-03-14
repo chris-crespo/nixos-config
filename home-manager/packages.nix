@@ -13,6 +13,7 @@
     ripgrep
     tldr
     tree
+    xclip
     (nerdfonts.override { fonts = [ "DejaVuSansMono" ]; })
   ];
 

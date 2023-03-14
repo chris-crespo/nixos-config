@@ -19,6 +19,7 @@ in {
       cmp-buffer
       cmp-vsnip
       vim-vsnip
+      null-ls-nvim
       nvim-autopairs
       nvim-lspconfig
       nvim-surround
