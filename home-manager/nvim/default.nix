@@ -24,7 +24,15 @@ in {
       nvim-lspconfig
       nvim-surround
       {
-        plugin = nvim-treesitter.withPlugins (p: [ p.nix p.lua p.rust ]);
+        plugin = nvim-treesitter.withPlugins (p: with p; [ 
+          astro 
+          css
+          nix 
+          lua 
+          rust 
+          tsx
+          typescript 
+        ]);
       }
       nvim-tree-lua
       nvim-web-devicons

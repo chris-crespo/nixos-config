@@ -8,7 +8,14 @@ function on_attach(client, buffer)
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 end
 
-require 'lspconfig'.tsserver.setup {
+local lspconfig = require'lspconfig'
+
+lspconfig.astro.setup {
+  on_attach = on_attach,
+  filetypes = { "astro" }
+}
+
+lspconfig.tsserver.setup {
   on_attach = on_attach,
   filetypes = { "typescript", "typescriptreact" }
 }
