@@ -13,7 +13,9 @@
     ripgrep
     tldr
     tree
+    unzip
     xclip
+    zip
     (nerdfonts.override { fonts = [ "DejaVuSansMono" ]; })
   ];
 
