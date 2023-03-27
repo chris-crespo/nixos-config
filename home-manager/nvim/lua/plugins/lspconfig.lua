@@ -17,5 +17,5 @@ lspconfig.astro.setup {
 
 lspconfig.tsserver.setup {
   on_attach = on_attach,
-  filetypes = { "typescript", "typescriptreact" }
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 }
