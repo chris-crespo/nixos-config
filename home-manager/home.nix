@@ -6,6 +6,7 @@
     ./eww
     ./fish
     ./git
+    ./gh
     ./keychain
     ./kitty
     ./nvim
