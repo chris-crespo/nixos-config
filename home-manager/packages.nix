@@ -9,6 +9,7 @@
     killall
     httpie
     libnotify
+    qmk
     ranger
     ripgrep
     tldr
