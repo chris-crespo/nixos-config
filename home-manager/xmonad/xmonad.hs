@@ -26,6 +26,15 @@ import qualified Data.Map as M
 myTerminal :: String
 myTerminal = "kitty"
 
+terminalExec :: String
+terminalExec = myTerminal
+
+editor :: String
+editor = "nvim"
+
+configDir :: String
+configDir = "~/config"
+
 myBorderWidth = 3
 
 myFocusedBorderColor :: String
@@ -63,6 +72,7 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm, xK_p), spawn "rofi -show drun")
   , ((modm, xK_w), kill)
   , ((modm, xK_t), spawn "eww open powermenu")
+  , ((modm, xK_c), spawn $ unwords [terminalExec, editor, configDir])
 
   , ((modm              , xK_m), windows W.focusMaster)
   , ((modm              , xK_j), windows W.focusDown)
