@@ -60,9 +60,8 @@
     autoRepeatInterval = 36;
 
     # Configure keymap in X11
-    layout = "es";
+    layout = "us";
     xkbOptions = "caps:escape";
-    xkbVariant = "nodeadkeys";
 
     libinput = {
       enable = true;
