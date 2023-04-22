@@ -19,3 +19,36 @@ lspconfig.tsserver.setup {
   on_attach = on_attach,
   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 }
+
+local ht = require 'haskell-tools'
+ht.setup {
+  start_or_attach = {
+    hls = {
+      on_attach = on_attach
+    }
+  }
+}
+
+require 'rust-tools'.setup {
+  tools = {
+    runnables = {
+      use_telescope = true
+    },
+    inlay_hints = {
+      auto = false, -- inlay_hints are broken
+      show_parameter_hints = false,
+      parameter_hints_prefix = "",
+      other_hints_prefix = ""
+    },
+  },
+  server = {
+    on_attach = on_attach,
+    settings = {
+      ['rust-analyzer'] = {
+        checkOnSave = {
+          command = 'clippy'
+        }
+      }
+    }
+  }
+}

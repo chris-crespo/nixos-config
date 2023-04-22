@@ -64,7 +64,7 @@ myLayout = minimize . BW.boringWindows $ lessBorders OnlyFloat $ gaps myGaps $ m
 
     tiled = Tall nmaster delta ratio
     nmaster = 1
-    ratio = 1/2
+    ratio = 2/3
     delta = 3/100
 
 myKeys conf@(XConfig { modMask = modm }) = M.fromList $ 

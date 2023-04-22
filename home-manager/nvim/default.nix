@@ -36,6 +36,7 @@ in {
       }
       nvim-tree-lua
       nvim-web-devicons
+      haskell-tools-nvim
       rust-tools-nvim
       telescope-nvim
       yuck-vim
