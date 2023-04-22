@@ -19,6 +19,7 @@ in {
       cmp-buffer
       cmp-vsnip
       vim-vsnip
+      neodev-nvim
       null-ls-nvim
       nvim-autopairs
       nvim-lspconfig
@@ -44,6 +45,7 @@ in {
 
     extraPackages = with pkgs; [
       statix
+      sumneko-lua-language-server
     ];
 
     extraConfig = with builtins; ''

@@ -1,17 +1,20 @@
 local api = vim.api
 local cmd = vim.cmd
-local opt = vim.opt
 
 cmd.colorscheme 'catppuccin-mocha'
 -- set mouse=
 
-opt.tabstop = 2
-opt.shiftwidth = 2
-opt.expandtab = true
+vim.cmd [[
+  set tabstop=2
+  set shiftwidth=2
+  set expandtab
+]]
 
-api.nvim_create_autocmd("FileType", { 
-  pattern = "make", 
-  command = [[set noexpandtab shiftwidth=4]]
+api.nvim_create_autocmd("FileType", {
+  pattern = "make",
+  command = [[
+    set noexpandtab shiftwidth=4
+  ]]
 })
 
 vim.wo.signcolumn = "yes"

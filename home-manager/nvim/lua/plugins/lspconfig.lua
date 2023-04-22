@@ -1,4 +1,4 @@
-function on_attach(client, buffer)
+local function on_attach(client, buffer)
   local opts = { buffer = buffer }
   vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, opts)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -8,11 +8,19 @@ function on_attach(client, buffer)
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 end
 
-local lspconfig = require'lspconfig'
+require 'lspconfig.ui.windows'.default_options.border = 'rounded'
+
+local lspconfig = require 'lspconfig'
 
 lspconfig.astro.setup {
   on_attach = on_attach,
   filetypes = { "astro" }
+}
+
+require 'neodev'.setup {}
+
+lspconfig.sumneko_lua.setup {
+  on_attach = on_attach,
 }
 
 lspconfig.tsserver.setup {
