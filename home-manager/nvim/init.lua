@@ -2,7 +2,6 @@ local api = vim.api
 local cmd = vim.cmd
 
 cmd.colorscheme 'catppuccin-mocha'
--- set mouse=
 
 vim.cmd [[
   set tabstop=2
