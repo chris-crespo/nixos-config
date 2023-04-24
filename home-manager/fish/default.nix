@@ -22,7 +22,7 @@
 
     shellAliases = {
       c = "clear";
-      f = "nvim \$(fd --type f -H | fzf)";
+      f = "set __file \$(fd --type f -H | fzf) && nvim $__file; set -e __file";
       d = "cd \$(fd --type d -H | fzf || pwd)";
 
       hm = "home-manager";
