@@ -19,6 +19,7 @@ in {
       cmp-buffer
       cmp-vsnip
       vim-vsnip
+      vim-fugitive
       neodev-nvim
       null-ls-nvim
       nvim-autopairs
