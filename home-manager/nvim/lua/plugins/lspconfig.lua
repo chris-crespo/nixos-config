@@ -23,9 +23,15 @@ lspconfig.sumneko_lua.setup {
   on_attach = on_attach,
 }
 
+lspconfig.denols.setup {
+  on_attach = on_attach,
+  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc")
+}
+
 lspconfig.tsserver.setup {
   on_attach = on_attach,
-  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+  root_dir = lspconfig.util.root_pattern("package.json"),
+  single_file_support = false
 }
 
 local ht = require 'haskell-tools'
