@@ -24,7 +24,7 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
 myTerminal :: String
-myTerminal = "kitty"
+myTerminal = "kitty -o allow_remote_control=yes"
 
 terminalExec :: String
 terminalExec = myTerminal
@@ -56,7 +56,7 @@ myStartupHook = do
   spawnOnce "picom --experimental-backends"
   spawnOnce "eww daemon & eww open powermenu"
 
-myGaps = [(L, 160), (R, 160), (U, 120), (D, 120)]
+myGaps = [(L, 160), (R, 160), (U, 127), (D, 127)]
 
 myLayout = minimize . BW.boringWindows $ lessBorders OnlyFloat $ gaps myGaps $ mySpacing $ tiled
   where 
