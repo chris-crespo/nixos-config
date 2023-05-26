@@ -21,6 +21,15 @@
     };
   };
 
+  virtualisation.docker = {
+    enable = true;
+    storageDriver = "btrfs";
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+
   services.udev.extraRules = ''
     # Atmel DFU
     ### ATmega16U2
@@ -182,7 +191,7 @@
   users.users.chris = {
     home = "/home/nix";
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "video" "audio" "docker" ];
     shell = pkgs.fish;
   };
 
