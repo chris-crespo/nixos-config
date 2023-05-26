@@ -8,7 +8,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usbhid" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -31,6 +31,11 @@
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/0071-99FB";
       fsType = "vfat";
+    };
+
+  fileSystems."/var/lib/docker" =
+    { device = "/dev/disk/by-uuid/95f245d1-820e-467b-af42-38bb7b97d0b0";
+      fsType = "btrfs";
     };
 
   swapDevices =
