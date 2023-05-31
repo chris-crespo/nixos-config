@@ -29,6 +29,7 @@ in {
         plugin = nvim-treesitter.withPlugins (p: with p; [ 
           astro 
           css
+          fish
           nix 
           lua 
           rust 
