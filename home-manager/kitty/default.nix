@@ -5,8 +5,9 @@
     theme = "Catppuccin-Mocha";
 
     settings = { 
-      font_family = "DejaVuSansMono Nerd Font Mono";
+      font_family = "DejaVuSansM Nerd Font Mono";
       font_size = 10;
+      text_composition_strategy = "legacy";
       draw_minimal_borders = true;
       window_border_width = 0;
       window_padding_width = 14;
