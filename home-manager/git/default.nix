@@ -3,7 +3,7 @@
   programs.git = {
     enable = true;
 
-    userName = "christian";
+    userName = "Christian Crespo";
     userEmail = "christian.crespoo.98@gmail.com";
 
     aliases = {
@@ -14,5 +14,12 @@
     extraConfig = {
       init.defaultBranch = "main";
     };
+
+    includes = [
+      {
+        path = "~/work/.gitconfig";
+        condition = "gitdir:~/work/";
+      }
+    ];
   };
 }
