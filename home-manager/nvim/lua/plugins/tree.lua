@@ -1,7 +1,7 @@
 local lib = require 'nvim-tree.lib'
 local view = require 'nvim-tree.view'
 
-local function collapse_all() 
+local function collapse_all()
   require 'nvim-tree.actions.tree-modifiers.collapse-all'.fn()
 end
 
@@ -29,7 +29,7 @@ require 'nvim-tree'.setup {
     mappings = {
       list = {
         { key = 'h', action = 'close_node' },
-        { key = 'H', action = 'collapse_all', action_cb = collapse_all },
+        { key = 'H', action = 'collapse_all',   action_cb = collapse_all },
         { key = 'l', action = 'open_node' },
         { key = 'L', action = 'vsplit_preview', action_cb = vsplit_preview }
       }
