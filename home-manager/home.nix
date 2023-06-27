@@ -26,6 +26,7 @@
   home.pointerCursor = with pkgs; {
     package = catppuccin-cursors.mochaDark;
     name = "Catppuccin-Mocha-Dark-Cursors";
+    size = 2;
     x11 = {
       enable = true;
     }; 
