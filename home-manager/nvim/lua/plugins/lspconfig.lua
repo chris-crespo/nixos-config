@@ -1,6 +1,6 @@
 local function on_attach(client, buffer)
   local opts = { buffer = buffer }
-  vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, opts)
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
   vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
