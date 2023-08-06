@@ -15,8 +15,9 @@
          :spacing 25
       (_battery :status {EWW_BATTERY.BAT0.status}
                 :battery {EWW_BATTERY.BAT0.capacity}
-                :charge "" :one "" :two "" :three ""
-                :four "" :five "" :six "":seven ""))))
+                :charging "󰂄" :full "󰁹" :alert "󰂃"
+                :nine "󰂂" :eight "󰂁" :seven "󰂀" :six "󰁿" :five "󰁾"
+                :four "󰁽" :three "󰁼" :two "󰁻" :one "󰁺"))))
 
 (defpoll time 
   :interval "5s"
@@ -43,14 +44,23 @@
         strength > -85 ? good :
           strength > -100 ? okay : slow})))
 
-(defwidget _battery [battery status one two three four five six seven charge]
+(defwidget _battery [
+    battery status 
+    charging full alert
+    nine eight seven six five four three two one
+  ]
   (box :class "bat-box"
        :space-evenly false
        :spacing 8
-    (label :text {status == "Charging" ? charge :
-      battery < 15 ? seven :
-        battery < 30 ? six :
-          battery < 45 ? five :
-            battery < 60 ? four :
-              battery < 75 ? three :
-                battery < 95 ? two : one})))
+    (label :text {status == "Charging" ? charging :
+      battery > 90 ? full
+        : battery > 80 ? nine
+        : battery > 70 ? eight
+        : battery > 60 ? seven
+        : battery > 50 ? six
+        : battery > 40 ? five
+        : battery > 30 ? four
+        : battery > 20 ? three
+        : battery > 10 ? two
+        : battery > 5 ? one
+        : alert })))
