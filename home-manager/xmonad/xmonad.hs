@@ -38,7 +38,7 @@ configDir = "~/config"
 myBorderWidth = 2
 
 myFocusedBorderColor :: String
-myFocusedBorderColor = "#89B4FA"
+myFocusedBorderColor = "#f2cdcd"
 
 myNormalBorderColor :: String
 myNormalBorderColor = "#313244"
