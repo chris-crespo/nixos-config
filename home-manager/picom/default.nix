@@ -14,13 +14,13 @@
 
     backend = "glx";
 
-    shadow = true;
+    # shadow = true;
     shadowOffsets = [ 2 2 ];
     shadowOpacity = 0.95;
     settings = { 
-      corner-radius = 2;
-      round-borders = 2;
-      full-shadow = true;
+      corner-radius = 8;
+      round-borders = 1;
+      # full-shadow = true;
       shadow-radius = 2;
       shadow-exclude = [
         "window_type = 'menu'"

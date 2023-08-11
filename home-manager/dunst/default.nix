@@ -8,7 +8,7 @@
         horizontal_padding = 16;
         offset = "30x12";
         transparency = 10;
-        corner_radius = 12;
+        corner_radius = 8;
         shrink = true;
 
         font = "DejaVuSansM Nerd Font Mono 9";

@@ -35,10 +35,10 @@ editor = "nvim"
 configDir :: String
 configDir = "~/config"
 
-myBorderWidth = 3
+myBorderWidth = 2
 
 myFocusedBorderColor :: String
-myFocusedBorderColor = "#45475a"
+myFocusedBorderColor = "#89B4FA"
 
 myNormalBorderColor :: String
 myNormalBorderColor = "#313244"
@@ -58,14 +58,19 @@ myStartupHook = do
 
 myGaps = [(L, 160), (R, 160), (U, 127), (D, 127)]
 
-myLayout = minimize . BW.boringWindows $ lessBorders OnlyFloat $ gaps myGaps $ mySpacing $ tiled
-  where 
-    mySpacing = spacingRaw False (Border 10 10 10 10) True (Border 10 10 10 10) True 
+myLayout = minimize . BW.boringWindows 
+  $ smartBorders
+  $ lessBorders OnlyFloat 
+  $ gaps myGaps 
+  $ mySpacing 
+  $ tiled
+ where 
+   mySpacing = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True 
 
-    tiled = Tall nmaster delta ratio
-    nmaster = 1
-    ratio = 2/3
-    delta = 3/100
+   tiled = Tall nmaster delta ratio
+   nmaster = 1
+   ratio = 2/3
+   delta = 3/100
 
 myKeys conf@(XConfig { modMask = modm }) = M.fromList $ 
   [ ((modm, xK_Return), spawn $ terminal conf)
