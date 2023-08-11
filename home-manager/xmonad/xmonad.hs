@@ -59,7 +59,6 @@ myStartupHook = do
 myGaps = [(L, 160), (R, 160), (U, 127), (D, 127)]
 
 myLayout = minimize . BW.boringWindows 
-  $ smartBorders
   $ lessBorders OnlyFloat 
   $ gaps myGaps 
   $ mySpacing 
