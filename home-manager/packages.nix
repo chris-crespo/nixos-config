@@ -8,6 +8,7 @@
     fzf
     killall
     httpie
+    jq
     libnotify
     qmk
     ranger
