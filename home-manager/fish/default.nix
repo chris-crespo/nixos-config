@@ -4,20 +4,35 @@
   programs.fish = {
     enable = true;
 
-    #   function fish_prompt
-    #     set -l path (basename $PWD)
-    #     if test path = "nix" then
-    #       echo "~ λ "
-    #     else 
-    #       echo "$path λ "
-    #     end
-    #   end
     shellInit = ''
       if status is-login
         if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
           exec startx -- -keeptty
         end
       end
+
+      function fish_prompt
+        set -l triangle_color (
+          if test $status -ne 0
+            echo '#f38ba8' 
+          else
+            echo '#a6e3a1'
+          end
+        )
+
+        set -l path (
+          if [ "$PWD" = "$HOME" ]
+            echo '~'
+          else
+            echo (basename $PWD)
+          end
+        )
+
+        printf '%s%s %s󱨊 ' (set_color '#89b4fa') $path (set_color "$triangle_color")
+      end
+
+      function fish_mode_prompt; end
+      function fish_greeting; end
     '';
 
     shellAliases = {
