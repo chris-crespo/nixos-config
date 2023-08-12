@@ -6,9 +6,10 @@
       global = {
         padding = 12;
         horizontal_padding = 16;
-        offset = "30x12";
-        transparency = 10;
+        offset = "16x16";
+        transparency = 0;
         corner_radius = 8;
+        width = 442;
         shrink = true;
 
         font = "DejaVuSansM Nerd Font Mono 9";
