@@ -30,17 +30,19 @@ in {
           astro 
           css
           fish
+          html
           java
           nix 
           lua 
+          prisma
           rust 
           tsx
           typescript 
         ]);
       }
       nvim-tree-lua
+      nvim-ts-autotag
       nvim-web-devicons
-      haskell-tools-nvim
       rust-tools-nvim
       telescope-nvim
       yuck-vim
@@ -54,12 +56,12 @@ in {
     ];
 
     extraConfig = with builtins; ''
-      lua <<EOF
-        ${builtins.readFile ./init.lua}
-        ${builtins.readFile ./lua/opts.lua}
-        ${builtins.readFile ./lua/core/keymaps.lua}
-        ${pluginConfigs}
-      EOF
+lua <<EOF
+${builtins.readFile ./init.lua}
+${builtins.readFile ./lua/opts.lua}
+${builtins.readFile ./lua/core/keymaps.lua}
+${pluginConfigs}
+EOF
     '';
   };
 

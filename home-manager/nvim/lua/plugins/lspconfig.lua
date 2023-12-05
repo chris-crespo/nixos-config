@@ -5,13 +5,16 @@ local function on_attach(client, buffer)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
   vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-  vim.keymap.set('n', 'F', vim.lsp.buf.format, opts)
+  vim.keymap.set('n', '<leader>F', vim.lsp.buf.format, opts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
   vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 end
 
 require 'lspconfig.ui.windows'.default_options.border = 'rounded'
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local lspconfig = require 'lspconfig'
 
@@ -37,15 +40,6 @@ lspconfig.tsserver.setup {
   single_file_support = false
 }
 
-local ht = require 'haskell-tools'
-ht.setup {
-  start_or_attach = {
-    hls = {
-      on_attach = on_attach
-    }
-  }
-}
-
 require 'rust-tools'.setup {
   tools = {
     runnables = {
@@ -59,11 +53,15 @@ require 'rust-tools'.setup {
     },
   },
   server = {
+    capabilities = capabilities,
     on_attach = on_attach,
     settings = {
       ['rust-analyzer'] = {
         checkOnSave = {
           command = 'clippy'
+        },
+        cargo = {
+          allFeatures = true
         }
       }
     }
