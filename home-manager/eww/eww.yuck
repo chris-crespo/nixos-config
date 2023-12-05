@@ -1,66 +1,76 @@
-(defwindow powermenu
-  :stacking "bg"
-  :windowtype "desktop"
-  :wm-ignore true
-  :geometry (geometry :width "30px" :height "100%")
-  (powermenu_layout))
-  ;(label :text "${time.hour}"))
+(defwindow time-side
+  :geometry (geometry :x "64px" :height "70px" :anchor "top right")
+  (time-side))
 
-(defwidget powermenu_layout []
-  (box :class "layout-box"
-       :space-evenly false
-       :orientiation "vertical"
-    (box :valign "start" 
-         :space-evenly false
-         :spacing 25
-      (_battery :status {EWW_BATTERY.BAT0.status}
+(defwidget time-side []
+  (box :orientation "h" :class "m-4" :space-evenly false
+    (box :orientation "h" :space-evenly false
+         :class "bg-base font-mono border-flamingo rounded-lg px-5 py-1.5" 
+      (box :class "font-icon text-sm text-flamingo mr-3" "󱑌")
+      (box {time}))))
+
+(defwindow sys-side
+  :geometry (geometry :x "-116px" :height "70px" :anchor "top right")
+  (sys-side))
+
+(defwidget sys-side []
+  (box :orientation "h" :class "m-4" :space-evenly "false"
+    (box :orientation "h" :space-evenly false
+         :class "bg-base font-icon border-flamingo rounded-lg px-5" 
+      (notifications :class "text-sm text-flamingo mr-8")
+      (network
+        :class "text-sm text-flamingo mr-8"
+        :status {network})
+      (battery 
+        :class "text-sm text-flamingo"
+        :status {EWW_BATTERY.BAT0.status} 
+        :capacity {EWW_BATTERY.BAT0.capacity}))))
+
+(defwidget notifications [class]
+  (label :class class :text { notification-count == 0 ? "󰍥" : "󰍢"}))
+
+(defwidget network [class status]
+  (label :class class :text { status == "connected" ? "󰤨" : "󰤭" }))
+
+(defwidget battery [class status capacity]
+  (label :class class :text { status == "Charging" ? "󰂄" :
+        capacity > 90 ? "󰁹" 
+      : capacity > 80 ? "󰂂"
+      : capacity > 70 ? "󰂁"
+      : capacity > 60 ? "󰂀"
+      : capacity > 50 ? "󰁿"
+      : capacity > 40 ? "󰁾"
+      : capacity > 30 ? "󰁽"
+      : capacity > 20 ? "󰁼"
+      : capacity > 10 ? "󰁻"
+      : capacity > 5 ?  "󰁺"
+      : "󰂃" }))
+
+(defwidget battery_layout []
+  (box :class "bg-base border-flamingo border-radius font-mono"
+    (_battery :status {EWW_BATTERY.BAT0.status}
                 :battery {EWW_BATTERY.BAT0.capacity}
                 :charging "󰂄" :full "󰁹" :alert "󰂃"
-                :nine "󰂂" :eight "󰂁" :seven "󰂀" :six "󰁿" :five "󰁾"
-                :four "󰁽" :three "󰁼" :two "󰁻" :one "󰁺"))))
+                :nine  "󰂂" 
+                :eight "󰂁" 
+                :seven "󰂀" 
+                :six   "󰁿" 
+                :five  "󰁾"
+                :four  "󰁽" 
+                :three "󰁼" 
+                :two   "󰁻" 
+                :one   "󰁺")))
+
+(defpoll notification-count 
+  :interval "5s"
+  `dunstctl count | grep Waiting | awk -F' ' '{ print $2 }'`)
 
 (defpoll time 
   :interval "5s"
-  :initial `date +'{ "hour": "%H", "min": "%M" }'`
-  `date +'{ "hour": "%H", "min": "%M" }'`)
+  :initial `date +'%H:%M'`
+  `date +'%H:%M'`)
+
+(defpoll network
+  :interval "5s"
+   "iwctl station wlan0 show | grep State | awk -F' ' '{ print $2 }'")
   
-(defwidget _buttons [shutdown shutdown_icon
-                     reboot reboot_icon
-                     logout logout_icon]
-  (box :class "btnx-box" :spacing 5
-       :vexpand true :hexpand true
-       :valign "end" :halign "end"
-       :space-evenly false
-    (button :onclick shutdown shutdown_icon)
-    (button :onclick reboot reboot_icon)
-    (button :onclick logout logout_icon)))
-
-(defwidget _network [strength offline excellent good okay slow]
-  (box :class "net-box"
-       :space-evenly false
-       :spacing 8
-    (label :text {strength == "" ? offline :
-      strength > -70 ? excellent :
-        strength > -85 ? good :
-          strength > -100 ? okay : slow})))
-
-(defwidget _battery [
-    battery status 
-    charging full alert
-    nine eight seven six five four three two one
-  ]
-  (box :class "bat-box"
-       :space-evenly false
-       :spacing 8
-    (label :text {status == "Charging" ? charging :
-      battery > 90 ? full
-        : battery > 80 ? nine
-        : battery > 70 ? eight
-        : battery > 60 ? seven
-        : battery > 50 ? six
-        : battery > 40 ? five
-        : battery > 30 ? four
-        : battery > 20 ? three
-        : battery > 10 ? two
-        : battery > 5 ? one
-        : alert })))
