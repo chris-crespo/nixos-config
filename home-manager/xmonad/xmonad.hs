@@ -1,4 +1,5 @@
 import XMonad
+import XMonad.Actions.Submap (submap)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks (docks, manageDocks)
 import XMonad.Actions.Minimize
@@ -6,7 +7,7 @@ import XMonad.Layout.Minimize
 import XMonad.Layout.NoBorders
 import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Fullscreen (fullscreenSupport)
-import XMonad.Layout.Gaps (GapMessage (..), Direction2D (..), gaps, setGaps)
+import XMonad.Layout.Gaps (GapSpec, GapMessage (..), Direction2D (..), gaps, setGaps, weakModifyGaps)
 import XMonad.Layout.LayoutModifier (ModifiedLayout)
 import XMonad.Layout.Spacing (Border (Border), Spacing, spacing, spacingRaw)
 import XMonad.Util.SpawnOnce (spawnOnce)
@@ -22,6 +23,8 @@ import Graphics.X11.ExtraTypes.XF86
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
+
+myWorkspaces = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" ]
 
 myTerminal :: String
 myTerminal = "kitty -o allow_remote_control=yes"
@@ -52,11 +55,17 @@ myStartupHook = do
   spawn     "xset r rate 200 40"
   spawn     "xsetroot -cursor_name left_ptr"
   spawnOnce "feh --bg-scale ~/wallpapers/street.jpg"
+  spawnOnce "eww daemon & eww open-many time-side sys-side"
   spawnOnce "dunst"
+  spawnOnce "dunstctl set-paused true"
   spawnOnce "picom --experimental-backends"
-  spawnOnce "eww daemon & eww open powermenu"
 
-myGaps = [(L, 160), (R, 160), (U, 127), (D, 127)]
+noGaps = [ (L, 0), (R, 0), (U, 52), (D, 0) ]
+myGaps = [ (L, 0), (R, 0), (U, 52), (D, 0) ]
+-- myGaps = [ (L, 160), (R, 160), (U, 127), (D, 127) ]
+
+cycleGaps :: GapSpec -> GapSpec
+cycleGaps gs = if gs == noGaps then myGaps else noGaps
 
 myLayout = minimize . BW.boringWindows 
   $ lessBorders OnlyFloat 
@@ -64,12 +73,12 @@ myLayout = minimize . BW.boringWindows
   $ mySpacing 
   $ tiled
  where 
-   mySpacing = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True 
+  mySpacing = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True 
 
-   tiled = Tall nmaster delta ratio
-   nmaster = 1
-   ratio = 2/3
-   delta = 3/100
+  tiled = Tall nmaster delta ratio
+  nmaster = 1
+  ratio = 2/3
+  delta = 3/100
 
 myKeys conf@(XConfig { modMask = modm }) = M.fromList $ 
   [ ((modm, xK_Return), spawn $ terminal conf)
@@ -90,8 +99,7 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm .|. shiftMask, xK_n), withLastMinimized maximizeWindow)
 
   -- Gaps
-  , ((modm .|. controlMask, xK_g), sendMessage $ ToggleGaps)
-  , ((modm .|. shiftMask, xK_g), sendMessage $ setGaps myGaps)
+  , ((modm .|. controlMask, xK_g), sendMessage $ ModifyGaps cycleGaps)
   , ((modm .|. controlMask, xK_t), sendMessage $ IncGap 10 L)
   , ((modm .|. shiftMask, xK_t), sendMessage $ DecGap 10 L)
   , ((modm .|. controlMask, xK_y), sendMessage $ IncGap 10 D)
@@ -102,6 +110,12 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm .|. shiftMask, xK_i), sendMessage $ DecGap 10 R)
 
   -- Audio keys
+  , ((modm, xK_v), spawn "pactl set-sink-volume 0 -5%")
+  , ((modm .|. shiftMask, xK_v), spawn "pactl set-sink-volume 0 +5%")
+  -- , ((modm, xK_v), submap . M.fromList $
+  --     [ ((modm, xK_k), spawn "pactl set-sink-volume 0 +5%")
+  --     , ((modm, xK_j), spawn "pactl set-sink-volume 0 -5%")
+  --     ])
   , ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
   , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
   , ((0, xF86XK_AudioMute), spawn "pactl set-sink-mute 0 toggle")
@@ -110,6 +124,11 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   -- Brightness keys
   , ((0, xF86XK_MonBrightnessUp), spawn "brightnessctl set +5")
   , ((0, xF86XK_MonBrightnessDown), spawn "brightnessctl set 5-")
+
+  -- Workspace 0
+  , ((modm, xK_0), do
+      windows $ W.greedyView "0"
+    )
   ]
   ++
   [ ((m .|. modm, k), windows $ f i) 
@@ -120,13 +139,14 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
 myConfig = def
   { modMask            = mod4Mask
   , keys               = myKeys
-  , terminal           = myTerminal
   , borderWidth        = myBorderWidth
   , focusedBorderColor = myFocusedBorderColor
-  , normalBorderColor  = myNormalBorderColor 
-  , startupHook        = myStartupHook
   , layoutHook         = myLayout
   , manageHook         = myManageHook
+  , normalBorderColor  = myNormalBorderColor 
+  , startupHook        = myStartupHook
+  , terminal           = myTerminal
+  , workspaces         = myWorkspaces
   } 
 
 main :: IO ()
