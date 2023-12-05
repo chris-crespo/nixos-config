@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Actions.Submap (submap)
 import XMonad.Hooks.EwmhDesktops (ewmh)
+import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks (docks, manageDocks)
 import XMonad.Actions.Minimize
 import XMonad.Layout.Minimize
@@ -46,9 +47,7 @@ myFocusedBorderColor = "#f2cdcd"
 myNormalBorderColor :: String
 myNormalBorderColor = "#313244"
 
-myManageHook = manageDocks <+> composeAll
-  [ --className =? "Eww" --> doFloat
-  ]
+myManageHook = manageDocks <+> insertPosition Below Newer <+> composeAll []
 
 myStartupHook :: X ()
 myStartupHook = do
