@@ -13,6 +13,7 @@
     qmk
     ranger
     ripgrep
+    spotify
     tldr
     tree
     unzip
