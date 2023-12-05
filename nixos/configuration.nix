@@ -123,7 +123,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.cleanTmpDir = true;
+  boot.tmp.cleanOnBoot = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -134,7 +134,7 @@
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Europe/Madrid";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
