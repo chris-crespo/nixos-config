@@ -3,6 +3,7 @@ import XMonad.Actions.Submap (submap)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks (docks, manageDocks)
+import XMonad.Hooks.Modal
 import XMonad.Actions.Minimize
 import XMonad.Layout.Minimize
 import XMonad.Layout.NoBorders
@@ -108,21 +109,8 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm .|. controlMask, xK_i), sendMessage $ IncGap 10 R)
   , ((modm .|. shiftMask, xK_i), sendMessage $ DecGap 10 R)
 
-  -- Audio keys
-  , ((modm, xK_v), spawn "pactl set-sink-volume 0 -5%")
-  , ((modm .|. shiftMask, xK_v), spawn "pactl set-sink-volume 0 +5%")
-  -- , ((modm, xK_v), submap . M.fromList $
-  --     [ ((modm, xK_k), spawn "pactl set-sink-volume 0 +5%")
-  --     , ((modm, xK_j), spawn "pactl set-sink-volume 0 -5%")
-  --     ])
-  , ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
-  , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
-  , ((0, xF86XK_AudioMute), spawn "pactl set-sink-mute 0 toggle")
-  , ((0, xF86XK_AudioMicMute), spawn "pactl set-source-mute 1 toggle")
-
-  -- Brightness keys
-  , ((0, xF86XK_MonBrightnessUp), spawn "brightnessctl set +5")
-  , ((0, xF86XK_MonBrightnessDown), spawn "brightnessctl set 5-")
+  , ((modm, xK_v), setMode "Vol")
+  , ((modm, xK_b), setMode "Bright")
 
   -- Workspace 0
   , ((modm, xK_0), do
@@ -134,6 +122,20 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
       | (i, k) <- zip (workspaces conf) [xK_1 .. xK_9]
       , (f, m) <- [ (W.greedyView, 0), (W.shift, shiftMask) ]
   ]
+
+brightMode :: Mode
+brightMode = mode "Bright" $ \cfg ->
+  M.fromList [ ((0, xK_k), spawn "brightnessctl set +5")
+             , ((0, xK_j), spawn "brightnessctl set 5-")
+             ]
+
+volMode :: Mode
+volMode = mode "Vol" $ \cfg ->
+  M.fromList [ ((0, xK_k), spawn "pactl set-sink-volume 0 +5%")
+             , ((0, xK_j), spawn "pactl set-sink-volume 0 -5%")
+             , ((0, xK_m), spawn "pactl set-sink-mute 0 toggle")
+             , ((0, xK_n), spawn "pactl set-sink-mute 1 toggle")
+             ]
 
 myConfig = def
   { modMask            = mod4Mask
@@ -149,4 +151,8 @@ myConfig = def
   } 
 
 main :: IO ()
-main = xmonad $ fullscreenSupport $ docks $ ewmh myConfig
+main = xmonad 
+  $ modal [brightMode, volMode] 
+  $ fullscreenSupport 
+  $ docks 
+  $ ewmh myConfig
