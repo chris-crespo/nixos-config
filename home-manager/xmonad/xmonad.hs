@@ -98,20 +98,10 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm              , xK_n), withFocused minimizeWindow)
   , ((modm .|. shiftMask, xK_n), withLastMinimized maximizeWindow)
 
-  -- Gaps
-  , ((modm .|. controlMask, xK_g), sendMessage $ ModifyGaps cycleGaps)
-  , ((modm .|. controlMask, xK_t), sendMessage $ IncGap 10 L)
-  , ((modm .|. shiftMask, xK_t), sendMessage $ DecGap 10 L)
-  , ((modm .|. controlMask, xK_y), sendMessage $ IncGap 10 D)
-  , ((modm .|. shiftMask, xK_y), sendMessage $ DecGap 10 D)
-  , ((modm .|. controlMask, xK_u), sendMessage $ IncGap 10 U)
-  , ((modm .|. shiftMask, xK_u), sendMessage $ DecGap 10 U)
-  , ((modm .|. controlMask, xK_i), sendMessage $ IncGap 10 R)
-  , ((modm .|. shiftMask, xK_i), sendMessage $ DecGap 10 R)
-
-  , ((modm, xK_v), setMode "vol")
-  , ((modm, xK_s), setMode "spotify")
   , ((modm, xK_b), setMode "bright")
+  , ((modm ,xK_r), setMode "resize")
+  , ((modm, xK_s), setMode "spotify")
+  , ((modm, xK_v), setMode "vol")
 
   -- Workspace 0
   , ((modm, xK_0), do
@@ -128,6 +118,43 @@ brightMode :: Mode
 brightMode = mode "bright" $ \cfg ->
   M.fromList [ ((0, xK_k), spawn "brightnessctl set +5")
              , ((0, xK_j), spawn "brightnessctl set 5-")
+             ]
+
+resizeMode :: Mode
+resizeMode = mode "resize" $ \cfg ->
+  M.fromList [ ((0, xK_r), sendMessage $ ModifyGaps cycleGaps)
+             , ((0, xK_h), setMode "resize.left" )
+             , ((0, xK_j), setMode "resize.bottom") 
+             , ((0, xK_k), setMode "resize.top")
+             , ((0, xK_l), setMode "resize.right" )
+             ]
+
+resizeLeftMode :: Mode
+resizeLeftMode = mode "resize.left" $ \cfg -> 
+  M.fromList [ ((0, xK_h), sendMessage $ DecGap 10 L) 
+             , ((0, xK_l), sendMessage $ IncGap 10 L)
+             , ((0, xK_b), setMode "resize")
+             ]
+
+resizeBottomMode :: Mode
+resizeBottomMode = mode "resize.bottom" $ \cfg ->
+  M.fromList [ ((0, xK_j), sendMessage $ DecGap 10 D)
+             , ((0, xK_k), sendMessage $ IncGap 10 D)
+             , ((0, xK_b), setMode "resize")
+             ]
+
+resizeTopMode :: Mode
+resizeTopMode = mode "resize.top" $ \cfg ->
+  M.fromList [ ((0, xK_k), sendMessage $ DecGap 10 U)
+             , ((0, xK_j), sendMessage $ IncGap 10 U)
+             , ((0, xK_b), setMode "resize")
+             ]
+
+resizeRightMode :: Mode
+resizeRightMode = mode "resize.right" $ \cfg ->
+  M.fromList [ ((0, xK_l), sendMessage $ DecGap 10 R)
+             , ((0, xK_h), sendMessage $ IncGap 10 R)
+             , ((0, xK_b), setMode "resize")
              ]
 
 spotifyMode :: Mode
@@ -166,7 +193,15 @@ myConfig = def
 
 main :: IO ()
 main = xmonad 
-  $ modal [brightMode, spotifyMode, volMode] 
+  $ modal [ brightMode
+          , resizeMode
+          , resizeLeftMode
+          , resizeTopMode
+          , resizeBottomMode
+          , resizeRightMode
+          , spotifyMode
+          , volMode
+          ]
   $ fullscreenSupport 
   $ docks 
   $ ewmh myConfig
