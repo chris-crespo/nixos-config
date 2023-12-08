@@ -109,8 +109,9 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm .|. controlMask, xK_i), sendMessage $ IncGap 10 R)
   , ((modm .|. shiftMask, xK_i), sendMessage $ DecGap 10 R)
 
-  , ((modm, xK_v), setMode "Vol")
-  , ((modm, xK_b), setMode "Bright")
+  , ((modm, xK_v), setMode "vol")
+  , ((modm, xK_s), setMode "spotify")
+  , ((modm, xK_b), setMode "bright")
 
   -- Workspace 0
   , ((modm, xK_0), do
@@ -124,13 +125,26 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   ]
 
 brightMode :: Mode
-brightMode = mode "Bright" $ \cfg ->
+brightMode = mode "bright" $ \cfg ->
   M.fromList [ ((0, xK_k), spawn "brightnessctl set +5")
              , ((0, xK_j), spawn "brightnessctl set 5-")
              ]
 
+spotifyMode :: Mode
+spotifyMode = mode "spotify" $ \cfg ->
+  M.fromList [ ( (0, xK_k)
+               , spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+               )
+             , ( (0, xK_j)
+               , spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+               )
+             , ( (0, xK_l)
+               , spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+               )
+             ]
+
 volMode :: Mode
-volMode = mode "Vol" $ \cfg ->
+volMode = mode "vol" $ \cfg ->
   M.fromList [ ((0, xK_k), spawn "pactl set-sink-volume 0 +5%")
              , ((0, xK_j), spawn "pactl set-sink-volume 0 -5%")
              , ((0, xK_m), spawn "pactl set-sink-mute 0 toggle")
@@ -152,7 +166,7 @@ myConfig = def
 
 main :: IO ()
 main = xmonad 
-  $ modal [brightMode, volMode] 
+  $ modal [brightMode, spotifyMode, volMode] 
   $ fullscreenSupport 
   $ docks 
   $ ewmh myConfig
