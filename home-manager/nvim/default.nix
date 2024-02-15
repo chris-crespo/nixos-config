@@ -40,7 +40,6 @@ in {
           typescript 
         ]);
       }
-      nvim-tree-lua
       nvim-ts-autotag
       nvim-web-devicons
       rust-tools-nvim
