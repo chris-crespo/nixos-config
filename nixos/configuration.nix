@@ -158,8 +158,8 @@
     autoRepeatInterval = 36;
 
     # Configure keymap in X11
-    layout = "us";
-    xkbOptions = "caps:escape";
+    xkb.layout = "us";
+    xkb.options = "caps:escape";
 
     libinput = {
       enable = true;
