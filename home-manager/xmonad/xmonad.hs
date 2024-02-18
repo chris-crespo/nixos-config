@@ -58,7 +58,7 @@ myStartupHook = do
   spawnOnce "eww daemon & eww open-many time-side sys-side"
   spawnOnce "dunst"
   spawnOnce "dunstctl set-paused true"
-  spawnOnce "picom --experimental-backends"
+  spawnOnce "picom"
 
 noGaps = [ (L, 0), (R, 0), (U, 52), (D, 0) ]
 myGaps = [ (L, 0), (R, 0), (U, 52), (D, 0) ]

@@ -10,7 +10,7 @@
     ./keychain
     ./kitty
     ./nvim
-    # ./picom
+    ./picom
     ./rofi
     ./xmonad
 
