@@ -14,6 +14,7 @@ in {
     plugins = with pkgs.vimPlugins; [
       catppuccin-nvim
       nvim-cmp
+      comment-nvim
       cmp-nvim-lsp
       cmp-path
       cmp-buffer
