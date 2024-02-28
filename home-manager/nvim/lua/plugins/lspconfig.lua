@@ -29,41 +29,46 @@ lspconfig.lua_ls.setup {
   on_attach = on_attach,
 }
 
-lspconfig.denols.setup {
-  on_attach = on_attach,
-  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc")
-}
-
 lspconfig.tsserver.setup {
   on_attach = on_attach,
+  capabilities = capabilities,
   root_dir = lspconfig.util.root_pattern("package.json"),
   single_file_support = false
 }
 
-require 'rust-tools'.setup {
-  tools = {
-    runnables = {
-      use_telescope = true
-    },
-    inlay_hints = {
-      auto = false, -- inlay_hints are broken
-      show_parameter_hints = false,
-      parameter_hints_prefix = "",
-      other_hints_prefix = ""
-    },
-  },
+vim.g.rustaceanvim = {
   server = {
-    capabilities = capabilities,
     on_attach = on_attach,
-    settings = {
-      ['rust-analyzer'] = {
-        checkOnSave = {
-          command = 'clippy'
-        },
-        cargo = {
-          allFeatures = true
-        }
-      }
-    }
+    capabilities = capabilities
   }
 }
+
+-- vim.g.rustaceanvim.server.on_attach = on_attach;
+
+-- require 'rust-tools'.setup {
+--   tools = {
+--     runnables = {
+--       use_telescope = true
+--     },
+--     inlay_hints = {
+--       auto = false, -- inlay_hints are broken
+--       show_parameter_hints = false,
+--       parameter_hints_prefix = "",
+--       other_hints_prefix = ""
+--     },
+--   },
+--   server = {
+--     capabilities = capabilities,
+--     on_attach = on_attach,
+--     settings = {
+--       ['rust-analyzer'] = {
+--         checkOnSave = {
+--           command = 'clippy'
+--         },
+--         cargo = {
+--           allFeatures = true
+--         }
+--       }
+--     }
+--   }
+-- }

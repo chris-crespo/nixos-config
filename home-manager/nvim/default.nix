@@ -42,7 +42,7 @@ in {
       }
       nvim-ts-autotag
       nvim-web-devicons
-      rust-tools-nvim
+      rustaceanvim
       telescope-nvim
       yuck-vim
 
