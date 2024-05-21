@@ -12,6 +12,7 @@
     ./nvim
     ./picom
     ./rofi
+    ./tmux
     ./xmonad
 
     ./packages.nix
