@@ -10,7 +10,8 @@
     httpie
     jq
     libnotify
-    qmk
+    nix-du
+    # qmk
     ranger
     ripgrep
     spotify
@@ -19,6 +20,7 @@
     unzip
     xclip
     zip
+    zotero
     (nerdfonts.override { fonts = [ "DejaVuSansMono" ]; })
   ];
 

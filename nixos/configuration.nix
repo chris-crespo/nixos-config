@@ -161,20 +161,19 @@
     xkb.layout = "us";
     xkb.options = "caps:escape";
 
-    libinput = {
-      enable = true;
-
-      touchpad = {
-        disableWhileTyping = true;
-        scrollMethod = "twofinger";
-        tappingButtonMap = "lrm";
-      };
-    };
-
     videoDrivers = [ "amdgpu" ];
     deviceSection = ''
       Option "TearFree" "true"
     '';
+  };
+
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      disableWhileTyping = true;
+      scrollMethod = "twofinger";
+      tappingButtonMap = "lrm";
+    };
   };
   
   # Enable CUPS to print documents.
