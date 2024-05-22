@@ -1,0 +1,13 @@
+name:          my-xmonad
+version:       0.1
+license:       MIT
+license-file:  LICENSE
+author:        Christian Crespo <christian.crespoo.98@gmail.com>
+category:      System
+build-type:    Simple
+cabal-version: >=1.8
+
+executable xmonad
+  main-is: xmonad.hs
+  ghc-options: -Wall -Werror -fno-warn-missing-signatures
+  build-depends: base, xmonad, xmonad-contrib, X11, containers

@@ -1,5 +1,4 @@
 import XMonad
-import XMonad.Actions.Submap (submap)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks (docks, manageDocks)
@@ -9,19 +8,9 @@ import XMonad.Layout.Minimize
 import XMonad.Layout.NoBorders
 import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Fullscreen (fullscreenSupport)
-import XMonad.Layout.Gaps (GapSpec, GapMessage (..), Direction2D (..), gaps, setGaps, weakModifyGaps)
-import XMonad.Layout.LayoutModifier (ModifiedLayout)
-import XMonad.Layout.Spacing (Border (Border), Spacing, spacing, spacingRaw)
+import XMonad.Layout.Gaps (GapSpec, GapMessage (..), Direction2D (..), gaps)
+import XMonad.Layout.Spacing (Border (Border), spacingRaw)
 import XMonad.Util.SpawnOnce (spawnOnce)
-
-import Graphics.X11.ExtraTypes.XF86 
-  ( xF86XK_MonBrightnessUp
-  , xF86XK_MonBrightnessDown
-  , xF86XK_AudioRaiseVolume
-  , xF86XK_AudioLowerVolume
-  , xF86XK_AudioMute
-  , xF86XK_AudioMicMute
-  )
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
@@ -67,20 +56,19 @@ myGaps = [ (L, 0), (R, 0), (U, 52), (D, 0) ]
 cycleGaps :: GapSpec -> GapSpec
 cycleGaps gs = if gs == noGaps then myGaps else noGaps
 
-myLayout = minimize . BW.boringWindows 
-  $ lessBorders OnlyFloat 
-  $ gaps myGaps 
-  $ mySpacing 
-  $ tiled
- where 
-  mySpacing = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True 
+myLayout = minimize . BW.boringWindows
+  $ lessBorders OnlyFloat
+  $ gaps myGaps
+  $ mySpacing tiled
+ where
+  mySpacing = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True
 
   tiled = Tall nmaster delta ratio
   nmaster = 1
   ratio = 2/3
   delta = 3/100
 
-myKeys conf@(XConfig { modMask = modm }) = M.fromList $ 
+myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   [ ((modm, xK_Return), spawn $ terminal conf)
   , ((modm, xK_p), spawn "rofi -show drun")
   , ((modm, xK_w), kill)
@@ -109,56 +97,56 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
     )
   ]
   ++
-  [ ((m .|. modm, k), windows $ f i) 
+  [ ((m .|. modm, k), windows $ f i)
       | (i, k) <- zip (workspaces conf) [xK_1 .. xK_9]
       , (f, m) <- [ (W.greedyView, 0), (W.shift, shiftMask) ]
   ]
 
 brightMode :: Mode
-brightMode = mode "bright" $ \cfg ->
+brightMode = mode "bright" $ \_ ->
   M.fromList [ ((0, xK_k), spawn "brightnessctl set +5")
              , ((0, xK_j), spawn "brightnessctl set 5-")
              ]
 
 resizeMode :: Mode
-resizeMode = mode "resize" $ \cfg ->
+resizeMode = mode "resize" $ \_ ->
   M.fromList [ ((0, xK_r), sendMessage $ ModifyGaps cycleGaps)
              , ((0, xK_h), setMode "resize.left" )
-             , ((0, xK_j), setMode "resize.bottom") 
+             , ((0, xK_j), setMode "resize.bottom")
              , ((0, xK_k), setMode "resize.top")
              , ((0, xK_l), setMode "resize.right" )
              ]
 
 resizeLeftMode :: Mode
-resizeLeftMode = mode "resize.left" $ \cfg -> 
-  M.fromList [ ((0, xK_h), sendMessage $ DecGap 10 L) 
+resizeLeftMode = mode "resize.left" $ \_ ->
+  M.fromList [ ((0, xK_h), sendMessage $ DecGap 10 L)
              , ((0, xK_l), sendMessage $ IncGap 10 L)
              , ((0, xK_b), setMode "resize")
              ]
 
 resizeBottomMode :: Mode
-resizeBottomMode = mode "resize.bottom" $ \cfg ->
+resizeBottomMode = mode "resize.bottom" $ \_ ->
   M.fromList [ ((0, xK_j), sendMessage $ DecGap 10 D)
              , ((0, xK_k), sendMessage $ IncGap 10 D)
              , ((0, xK_b), setMode "resize")
              ]
 
 resizeTopMode :: Mode
-resizeTopMode = mode "resize.top" $ \cfg ->
+resizeTopMode = mode "resize.top" $ \_ ->
   M.fromList [ ((0, xK_k), sendMessage $ DecGap 10 U)
              , ((0, xK_j), sendMessage $ IncGap 10 U)
              , ((0, xK_b), setMode "resize")
              ]
 
 resizeRightMode :: Mode
-resizeRightMode = mode "resize.right" $ \cfg ->
+resizeRightMode = mode "resize.right" $ \_ ->
   M.fromList [ ((0, xK_l), sendMessage $ DecGap 10 R)
              , ((0, xK_h), sendMessage $ IncGap 10 R)
              , ((0, xK_b), setMode "resize")
              ]
 
 spotifyMode :: Mode
-spotifyMode = mode "spotify" $ \cfg ->
+spotifyMode = mode "spotify" $ \_ ->
   M.fromList [ ( (0, xK_k)
                , spawn "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
                )
@@ -171,7 +159,7 @@ spotifyMode = mode "spotify" $ \cfg ->
              ]
 
 volMode :: Mode
-volMode = mode "vol" $ \cfg ->
+volMode = mode "vol" $ \_ ->
   M.fromList [ ((0, xK_k), spawn "pactl set-sink-volume 0 +5%")
              , ((0, xK_j), spawn "pactl set-sink-volume 0 -5%")
              , ((0, xK_m), spawn "pactl set-sink-mute 0 toggle")
@@ -185,14 +173,14 @@ myConfig = def
   , focusedBorderColor = myFocusedBorderColor
   , layoutHook         = myLayout
   , manageHook         = myManageHook
-  , normalBorderColor  = myNormalBorderColor 
+  , normalBorderColor  = myNormalBorderColor
   , startupHook        = myStartupHook
   , terminal           = myTerminal
   , workspaces         = myWorkspaces
-  } 
+  }
 
 main :: IO ()
-main = xmonad 
+main = xmonad
   $ modal [ brightMode
           , resizeMode
           , resizeLeftMode
@@ -202,6 +190,6 @@ main = xmonad
           , spotifyMode
           , volMode
           ]
-  $ fullscreenSupport 
-  $ docks 
+  $ fullscreenSupport
+  $ docks
   $ ewmh myConfig
