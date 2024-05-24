@@ -10,4 +10,4 @@ opt.smartindent = true
 
 opt.shortmess:append 'c'
 
-opt.signcolumn = 'yes'
+vim.wo.signcolumn = 'yes'
