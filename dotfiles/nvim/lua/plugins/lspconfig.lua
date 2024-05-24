@@ -1,0 +1,38 @@
+local function on_attach(client, bufnr)
+  local opts = { buffer = bufnr }
+  vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, opts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<leader>F', vim.lsp.buf.format, opts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+
+  vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+end
+
+require'lspconfig.ui.windows'.default_options_border = 'rounded'
+
+vim.diagnostic.config({
+  virtual_text = false,
+  update_in_insert = true,
+  underline = true,
+  float = {
+    border = 'rounded',
+    source = true,
+  }
+})
+
+local lspconfig = require'lspconfig'
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+local cmp_nvim_lsp = require'cmp_nvim_lsp'
+capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
+
+require'neodev'.setup {}
+
+lspconfig.lua_ls.setup {
+  on_attach = on_attach,
+  capabilitites = capabilities
+}

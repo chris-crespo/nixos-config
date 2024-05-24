@@ -1,20 +1,25 @@
-local cmp = require 'cmp'
+local cmp = require'cmp'
+local luasnip = require'luasnip'
+
 cmp.setup {
-  snippet = {
+  snipeet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
+      luasnip.lsp_expand(args.body)
     end
+  },
+  completion = {
+    keyword_length = 2
   },
   mapping = {
     ['<Tab>'] = cmp.mapping.confirm { select = true },
     ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item()
+    ['<C-n>'] = cmp.mapping.select_next_item(),
   },
   sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
     { name = 'path' },
-    { name = 'nvim_lsp', keyword_length = 3 },
-    { name = 'buffer', keyword_length = 2 },
-    { name = 'vsnip', keyword_length = 2 }
+    { name = 'buffer' }
   },
   window = {
     completion = cmp.config.window.bordered(),
