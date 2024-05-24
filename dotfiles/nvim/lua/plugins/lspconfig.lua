@@ -36,3 +36,9 @@ lspconfig.lua_ls.setup {
   on_attach = on_attach,
   capabilitites = capabilities
 }
+
+vim.g.haskell_tools = {
+  hls = {
+    on_attach = on_attach,
+  }
+}
