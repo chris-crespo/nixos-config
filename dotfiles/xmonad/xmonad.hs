@@ -1,12 +1,10 @@
 import XMonad
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.InsertPosition
-import XMonad.Hooks.ManageDocks (docks, manageDocks)
+import XMonad.Hooks.ManageDocks (docks, manageDocks, avoidStruts)
 import XMonad.Hooks.Modal
 import XMonad.Actions.Minimize
-import XMonad.Layout.Minimize
 import XMonad.Layout.NoBorders
-import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Fullscreen (fullscreenSupport)
 import XMonad.Layout.Gaps (GapSpec, GapMessage (..), Direction2D (..), gaps)
 import XMonad.Layout.Spacing (Border (Border), spacingRaw)
@@ -49,18 +47,19 @@ myStartupHook = do
   spawnOnce "dunstctl set-paused true"
   spawnOnce "picom"
 
-noGaps = [ (L, 0), (R, 0), (U, 52), (D, 0) ]
+noGaps = [ (L, 0), (R, 0), (U, 0), (D, 0) ]
 myGaps = [ (L, 0), (R, 0), (U, 52), (D, 0) ]
 -- myGaps = [ (L, 160), (R, 160), (U, 127), (D, 127) ]
 
 cycleGaps :: GapSpec -> GapSpec
 cycleGaps gs = if gs == noGaps then myGaps else noGaps
 
-myLayout = minimize . BW.boringWindows
-  $ lessBorders OnlyFloat
-  $ gaps myGaps
-  $ mySpacing tiled
+myLayout = -- minimize . BW.boringWindows
+  smartBorders 
+  $ avoidStruts 
+  $ mySpacing (gaps myGaps tiled) ||| noSpacing (gaps noGaps Full)
  where
+  noSpacing = spacingRaw False (Border 0 0 0 0) True (Border 0 0 0 0) True
   mySpacing = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True
 
   tiled = Tall nmaster delta ratio
@@ -85,6 +84,7 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm              , xK_l), sendMessage Expand)
   , ((modm              , xK_n), withFocused minimizeWindow)
   , ((modm .|. shiftMask, xK_n), withLastMinimized maximizeWindow)
+  , ((modm              , xK_space), sendMessage NextLayout)
 
   , ((modm, xK_b), setMode "bright")
   , ((modm ,xK_r), setMode "resize")
