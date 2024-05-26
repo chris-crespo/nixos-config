@@ -9,7 +9,7 @@ autocmd('FileType', {
 })
 autocmd('FileType', {
   group = 'indent',
-  pattern = { 'rust' },
-  command = 'setlocal shiftwidth=2 tabstop=2'
+  pattern = { 'rs' },
+  command = 'setlocal shiftwidth=4 tabstop=4'
 })
 
