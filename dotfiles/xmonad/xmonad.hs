@@ -92,7 +92,6 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   [ ((modm, xK_Return), spawn $ terminal conf)
   , ((modm, xK_p), spawn "rofi -show drun")
   , ((modm, xK_w), kill)
-  , ((modm, xK_t), spawn "eww open powermenu")
   , ((modm, xK_c), spawn $ unwords [terminalExec, configDir])
 
   , ((modm              , xK_m), windows W.focusMaster)
