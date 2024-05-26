@@ -1,9 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [
     eww
   ];
 
-  home.file.".config/eww/eww.yuck".source = ./eww.yuck;
-  home.file.".config/eww/eww.scss".source = ./eww.scss;
+  home.file.".config/eww/".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/config/dotfiles/eww/";
 }
