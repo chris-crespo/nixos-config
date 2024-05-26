@@ -48,4 +48,9 @@ require'lazy'.setup {
     'mrcjkb/haskell-tools.nvim',
     lazy = false, -- This plugin is already lazy
   }
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    lazy = false, -- This plugin is already lazy
+  },
 }

@@ -42,3 +42,9 @@ vim.g.haskell_tools = {
     on_attach = on_attach,
   }
 }
+
+vim.g.rustaceanvim = {
+	server = {
+		on_attach = on_attach
+	}
+}
