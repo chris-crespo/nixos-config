@@ -1,20 +1,41 @@
+(defwindow workspace-side
+  :geometry (geometry :x "0px" :height "70px" :anchor "top left")
+  (workspace-side))
+
+(defwidget workspace-side []
+  (box :orientation "h" :class "m-4" :space-evenly false
+    (box :orientation "h" :space-evenly false
+         :class "bg-base font-mono border-flamingo rounded-lg px-5"
+      (workspace :active { workspace == "0" } :class "mr-3" :text "1")
+      (workspace :active { workspace == "1" } :class "mr-3" :text "2")
+      (workspace :active { workspace == "2" } :class "mr-3" :text "3")
+      (workspace :active { workspace == "3" } :class "mr-3" :text "4")
+      (workspace :active { workspace == "4" } :class "mr-3" :text "5")
+      (workspace :active { workspace == "5" } :class "mr-3" :text "6")
+      (workspace :active { workspace == "6" } :class "mr-3" :text "7")
+      (workspace :active { workspace == "7" } :class "mr-3" :text "8")
+      (workspace :active { workspace == "8" } :class "" :text "9"))))
+
+(defwidget workspace [active class text]
+  (label :class "${class} ${active ? 'text-flamingo' : 'text-surface2'}" :text text))
+
 (defwindow time-side
-  :geometry (geometry :x "64px" :height "70px" :anchor "top right")
+  :geometry (geometry :x "1786px" :height "70px")
   (time-side))
 
 (defwidget time-side []
   (box :orientation "h" :class "m-4" :space-evenly false
     (box :orientation "h" :space-evenly false
-         :class "bg-base font-mono border-flamingo rounded-lg px-5 py-1.5" 
-      (box :class "font-icon text-sm text-flamingo mr-3" "󱑌")
-      (box {time}))))
+         :class "bg-base font-mono border-flamingo rounded-lg px-5" 
+      (label :class "font-icon text-sm text-flamingo mr-3" :text "󱑌")
+      (label :text {time}))))
 
 (defwindow sys-side
-  :geometry (geometry :x "-116px" :height "70px" :anchor "top right")
+  :geometry (geometry :x "1664px" :height "70px")
   (sys-side))
 
 (defwidget sys-side []
-  (box :orientation "h" :class "m-4" :space-evenly "false"
+  (box :orientation "h" :class "m-4" :space-evenly false
     (box :orientation "h" :space-evenly false
          :class "bg-base font-icon border-flamingo rounded-lg px-5" 
       (notifications :class "text-sm text-flamingo mr-8")
@@ -74,3 +95,6 @@
   :interval "5s"
    "iwctl station wlan0 show | grep State | awk -F' ' '{ print $2 }'")
   
+(deflisten workspace
+  :initial ""
+  "xprop -spy -root _NET_CURRENT_DESKTOP | stdbuf -o0 awk '{ print $3 }'")

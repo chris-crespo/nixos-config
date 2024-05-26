@@ -1,17 +1,21 @@
 import XMonad
-import XMonad.Hooks.EwmhDesktops (ewmh)
+import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks (docks, manageDocks, avoidStruts)
 import XMonad.Hooks.Modal
 import XMonad.Actions.Minimize
 import XMonad.Layout.NoBorders
-import XMonad.Layout.Fullscreen (fullscreenSupport)
+import XMonad.Layout.Fullscreen (fullscreenSupport, fullscreenManageHook)
 import XMonad.Layout.Gaps (GapSpec, GapMessage (..), Direction2D (..), gaps)
 import XMonad.Layout.Spacing (Border (Border), spacingRaw)
 import XMonad.Util.SpawnOnce (spawnOnce)
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
+import XMonad.Hooks.ManageHelpers (isFullscreen, doFullFloat)
+import Data.Maybe
+import Control.Monad
+import XMonad.Layout.Renamed
 
 myWorkspaces = [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" ]
 
@@ -35,14 +39,32 @@ myFocusedBorderColor = "#f2cdcd"
 myNormalBorderColor :: String
 myNormalBorderColor = "#313244"
 
-myManageHook = manageDocks <+> insertPosition Below Newer <+> composeAll []
+addNETSupported :: Atom -> X ()
+addNETSupported x   = withDisplay $ \dpy -> do
+    r               <- asks theRoot
+    a_NET_SUPPORTED <- getAtom "_NET_SUPPORTED"
+    a               <- getAtom "ATOM"
+    liftIO $ do
+       sup <- join . maybeToList <$> getWindowProperty32 dpy a_NET_SUPPORTED r
+       unless (fromIntegral x `elem` sup) $
+         changeProperty32 dpy r a_NET_SUPPORTED a propModeAppend [fromIntegral x]
+
+addEWMHFullscreen :: X ()
+addEWMHFullscreen   = do
+    wms <- getAtom "_NET_WM_STATE"
+    wfs <- getAtom "_NET_WM_STATE_FULLSCREEN"
+    mapM_ addNETSupported [wms, wfs]
+
+myManageHook = fullscreenManageHook <+> manageDocks <+> insertPosition Below Newer <+> composeAll
+  [ isFullscreen --> doFullFloat
+  ]
 
 myStartupHook :: X ()
 myStartupHook = do
   spawn     "xset r rate 200 40"
   spawn     "xsetroot -cursor_name left_ptr"
   spawnOnce "feh --bg-scale ~/wallpapers/street.jpg"
-  spawnOnce "eww daemon & eww open-many time-side sys-side"
+  spawnOnce "eww daemon && eww open-many workspace-side time-side sys-side"
   spawnOnce "dunst"
   spawnOnce "dunstctl set-paused true"
   spawnOnce "picom"
@@ -55,9 +77,8 @@ cycleGaps :: GapSpec -> GapSpec
 cycleGaps gs = if gs == noGaps then myGaps else noGaps
 
 myLayout = -- minimize . BW.boringWindows
-  smartBorders 
-  $ avoidStruts 
-  $ mySpacing (gaps myGaps tiled) ||| noSpacing (gaps noGaps Full)
+  avoidStruts
+  $ mySpacing (gaps myGaps tiled) ||| noSpacing (noBorders $ gaps noGaps Full)
  where
   noSpacing = spacingRaw False (Border 0 0 0 0) True (Border 0 0 0 0) True
   mySpacing = spacingRaw False (Border 8 8 8 8) True (Border 8 8 8 8) True
@@ -72,7 +93,7 @@ myKeys conf@(XConfig { modMask = modm }) = M.fromList $
   , ((modm, xK_p), spawn "rofi -show drun")
   , ((modm, xK_w), kill)
   , ((modm, xK_t), spawn "eww open powermenu")
-  , ((modm, xK_c), spawn $ unwords [terminalExec, editor, configDir])
+  , ((modm, xK_c), spawn $ unwords [terminalExec, configDir])
 
   , ((modm              , xK_m), windows W.focusMaster)
   , ((modm              , xK_j), windows W.focusDown)
@@ -174,7 +195,7 @@ myConfig = def
   , layoutHook         = myLayout
   , manageHook         = myManageHook
   , normalBorderColor  = myNormalBorderColor
-  , startupHook        = myStartupHook
+  , startupHook        = myStartupHook >> addEWMHFullscreen
   , terminal           = myTerminal
   , workspaces         = myWorkspaces
   }
