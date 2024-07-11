@@ -53,4 +53,6 @@ require'lazy'.setup {
     'mrcjkb/rustaceanvim',
     lazy = false, -- This plugin is already lazy
   },
+  { "pmizio/typescript-tools.nvim" },
+  { 'stevearc/conform.nvim' },
 }

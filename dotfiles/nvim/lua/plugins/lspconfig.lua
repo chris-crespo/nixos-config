@@ -48,3 +48,7 @@ vim.g.rustaceanvim = {
 		on_attach = on_attach
 	}
 }
+
+require'typescript-tools'.setup {
+  on_attach = on_attach
+}
