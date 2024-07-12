@@ -149,32 +149,32 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver = {
-    enable = true;
-    autorun = true;
-    displayManager.startx.enable = true;
+  # services.xserver = {
+  #   enable = true;
+  #   autorun = true;
+  #   displayManager.startx.enable = true;
 
-    autoRepeatDelay = 250;
-    autoRepeatInterval = 36;
+  #   autoRepeatDelay = 250;
+  #   autoRepeatInterval = 36;
 
-    # Configure keymap in X11
-    xkb.layout = "us";
-    xkb.options = "caps:escape";
+  #   # Configure keymap in X11
+  #   xkb.layout = "us";
+  #   xkb.options = "caps:escape";
 
-    videoDrivers = [ "amdgpu" ];
-    deviceSection = ''
-      Option "TearFree" "true"
-    '';
-  };
+  #   videoDrivers = [ "amdgpu" ];
+  #   deviceSection = ''
+  #     Option "TearFree" "true"
+  #   '';
+  # };
 
-  services.libinput = {
-    enable = true;
-    touchpad = {
-      disableWhileTyping = true;
-      scrollMethod = "twofinger";
-      tappingButtonMap = "lrm";
-    };
-  };
+  # services.libinput = {
+  #   enable = true;
+  #   touchpad = {
+  #     disableWhileTyping = true;
+  #     scrollMethod = "twofinger";
+  #     tappingButtonMap = "lrm";
+  #   };
+  # };
   
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -202,6 +202,7 @@
     fish = {
       enable = true;
     };
+    hyprland.enable = true;
   };
 
   # Some programs need SUID wrappers, can be configured further or are

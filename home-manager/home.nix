@@ -7,16 +7,13 @@
     ./fish
     ./git
     ./gh
+    ./hyprland
     ./keychain
     ./kitty
     ./nvim
-    ./picom
     ./rofi
-    ./tmux
-    ./xmonad
 
     ./packages.nix
-    ./xinitrc.nix
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -24,14 +21,15 @@
   home.username = "chris";
   home.homeDirectory = "/home/nix";
 
-  home.pointerCursor = with pkgs; {
-    package = catppuccin-cursors.mochaDark;
-    name = "Catppuccin-Mocha-Dark-Cursors";
-    size = 2;
-    x11 = {
-      enable = true;
-    }; 
-  };
+  # home.pointerCursor = with pkgs; {
+  #   # package = vanilla-dmz;
+  #   # name = "Vanilla-DMZ";
+  #   package = catppuccin-cursors.mochaMauve;
+  #   name = "catppuccin-mocha-dark";
+  #   size = 2;
+  #   gtk.enable = true;
+  #   x11.enable = true;
+  # };
 
   fonts.fontconfig.enable = true;
 

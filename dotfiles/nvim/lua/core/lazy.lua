@@ -47,7 +47,6 @@ require'lazy'.setup {
   {
     'mrcjkb/haskell-tools.nvim',
     lazy = false, -- This plugin is already lazy
-  }
   },
   {
     'mrcjkb/rustaceanvim',
@@ -55,4 +54,5 @@ require'lazy'.setup {
   },
   { "pmizio/typescript-tools.nvim" },
   { 'stevearc/conform.nvim' },
+  { dir = '/home/nix/starbux/client', lazy = false }
 }

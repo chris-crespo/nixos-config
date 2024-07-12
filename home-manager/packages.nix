@@ -16,6 +16,7 @@
     ripgrep
     spotify
     tldr
+    # rofi-wayland-unwrapped
     tree
     unzip
     xclip

@@ -6,7 +6,7 @@
       global = {
         padding = 12;
         horizontal_padding = 16;
-        offset = "16x16";
+        offset = "16x68";
         transparency = 0;
         corner_radius = 8;
         width = 442;
@@ -31,6 +31,11 @@
       urgency_critical = {
         frame_color = "#f38ba8";
       };
+
+      # skip_rule = {
+      #   appname = "*";
+      #   skip_display = true;
+      # };
     };
   };
 }
