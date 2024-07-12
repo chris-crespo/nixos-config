@@ -1,7 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
-  programs.rofi = {
-    enable = true;
-    package = pkgs.rofi-wayland-unwrapped;
-  };
+  home.file."${config.xdg.configHome}/rofi/".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/config/dotfiles/rofi/";
 }

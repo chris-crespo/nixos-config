@@ -14,9 +14,9 @@
     # qmk
     ranger
     ripgrep
+    rofi-wayland-unwrapped
     spotify
     tldr
-    # rofi-wayland-unwrapped
     tree
     unzip
     xclip
