@@ -1,12 +1,12 @@
 configuration {
-  modi: "drun,run";
+  modi: "apps:~/config/dotfiles/rofi/scripts/apps.sh,cmd:~/config/dotfiles/rofi/scripts/cmd.sh";
   icon-theme: "Oranchelo";
   show-icons: false;
   terminal: "kitty";
   drun-display-format: "{icon} {name}";
   location: 0;
-  display-drun: "   Apps ";
-  display-run: "   Run ";
+  display-apps: "   Apps ";
+  display-cmd: "   Run ";
   sidebar-mode: true;
 }
 
