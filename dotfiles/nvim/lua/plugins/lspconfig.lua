@@ -30,9 +30,32 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 local cmp_nvim_lsp = require'cmp_nvim_lsp'
 capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 
-require'neodev'.setup {}
-
 lspconfig.lua_ls.setup {
+  on_attach = on_attach,
+  capabilitites = capabilities,
+  settings = {
+    Lua = {
+      runtime = 'LuaJIT',
+      diagnostics = {
+        globals = { 'vim' }
+      },
+      workspace = {
+        checkThirdParty = false,
+        library = vim.api.nvim_get_runtime_file("", true)
+      },
+      telemetry = {
+        enabled = false
+      }
+    }
+  }
+}
+
+lspconfig.ccls.setup {
+  on_attach = on_attach,
+  capabilitites = capabilities
+}
+
+lspconfig.zls.setup {
   on_attach = on_attach,
   capabilitites = capabilities
 }
