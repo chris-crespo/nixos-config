@@ -5,7 +5,7 @@ local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 vim.opt.rtp:prepend(lazypath)
 
 require'lazy'.setup {
-  'folke/neodev.nvim',
+  'folke/lazydev.nvim',
   { "catppuccin/nvim", name = "catppuccin", lazy = false },
   { 'tpope/vim-fugitive' },
   {
