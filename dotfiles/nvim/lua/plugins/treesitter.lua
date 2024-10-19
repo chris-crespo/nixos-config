@@ -4,7 +4,7 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false
   },
   indent = { enable = true },
-  ensure_installed = { 'hyprlang', 'lua', 'markdown', 'vimdoc' },
+  ensure_installed = { 'gleam', 'hyprlang', 'lua', 'markdown', 'vimdoc', 'zig' },
 
   textobjects = {
     select = {
